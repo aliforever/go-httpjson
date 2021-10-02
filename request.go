@@ -19,3 +19,8 @@ func ParseRequest(wr http.ResponseWriter, r *http.Request) (req *Request, err er
 	}
 	return
 }
+
+func (r *Request) UnmarshalData(dst interface{}) (err error) {
+	err = json.Unmarshal(r.Data, &dst)
+	return
+}
