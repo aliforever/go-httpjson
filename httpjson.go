@@ -38,3 +38,8 @@ func MethodNotAllowed(writer http.ResponseWriter, data interface{}) (err error) 
 	err = writeHeadersAndData(writer, http.StatusMethodNotAllowed, data)
 	return
 }
+
+func InternalServerError(writer http.ResponseWriter, data interface{}) (err error) {
+	err = writeHeadersAndData(writer, http.StatusInternalServerError, data)
+	return
+}
