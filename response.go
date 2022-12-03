@@ -6,7 +6,7 @@ import (
 )
 
 type response struct {
-	Payload
+	payload
 
 	Data interface{} `json:"data,omitempty"`
 }
@@ -14,7 +14,7 @@ type response struct {
 func writeHeadersAndData(writer http.ResponseWriter, statusCode int, message string, data interface{}) (err error) {
 	var jsonBytes []byte
 	jsonBytes, err = json.Marshal(response{
-		Payload: Payload{
+		payload: payload{
 			StatusCode: statusCode,
 			StatusName: statusMessage(statusCode),
 			Message:    message,
