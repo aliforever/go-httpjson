@@ -6,26 +6,35 @@ import (
 )
 
 type response struct {
-	StatusCode int         `json:"status_code"`
-	StatusName string      `json:"status_name"`
-	Data       interface{} `json:"data,omitempty"`
+	Payload
+
+	Data interface{} `json:"data,omitempty"`
 }
 
-func writeHeadersAndData(writer http.ResponseWriter, statusCode int, data interface{}) (err error) {
+func writeHeadersAndData(writer http.ResponseWriter, statusCode int, message string, data interface{}) (err error) {
 	var jsonBytes []byte
 	jsonBytes, err = json.Marshal(response{
-		StatusCode: statusCode,
-		StatusName: statusMessage(statusCode),
-		Data:       data,
+		Payload: Payload{
+			StatusCode: statusCode,
+			StatusName: statusMessage(statusCode),
+			Message:    message,
+		},
+		Data: data,
 	})
 	if err != nil {
 		writer.Header().Set("Content-Type", "application/text")
 		writer.WriteHeader(http.StatusInternalServerError)
-		writer.Write([]byte("Internal Server Error"))
+		_, err := writer.Write([]byte("Internal Server Error"))
+		if err != nil {
+			return err
+		}
 		return
 	}
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(statusCode)
-	writer.Write(jsonBytes)
+	_, err = writer.Write(jsonBytes)
+	if err != nil {
+		return err
+	}
 	return
 }
