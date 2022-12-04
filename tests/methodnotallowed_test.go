@@ -11,7 +11,7 @@ import (
 
 func TestMethodNotAllowed(t *testing.T) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		httpjson.MethodNotAllowed(writer, "Welcome!")
+		httpjson.MethodNotAllowed(writer, "", "Welcome!")
 	})
 	go http.ListenAndServe(":80", nil)
 

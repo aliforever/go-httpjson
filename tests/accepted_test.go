@@ -11,7 +11,7 @@ import (
 
 func TestAccepted(t *testing.T) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		httpjson.Accepted(writer, "Welcome!")
+		httpjson.Accepted(writer, "", "Welcome!")
 	})
 	go http.ListenAndServe(":80", nil)
 

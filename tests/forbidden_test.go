@@ -11,7 +11,7 @@ import (
 
 func TestForbidden(t *testing.T) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		httpjson.Forbidden(writer, "Welcome!")
+		httpjson.Forbidden(writer, "", "Welcome!")
 	})
 	go http.ListenAndServe(":80", nil)
 

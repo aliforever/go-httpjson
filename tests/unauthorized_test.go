@@ -11,7 +11,7 @@ import (
 
 func TestUnauthorized(t *testing.T) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		httpjson.Unauthorized(writer, "Welcome!")
+		httpjson.Unauthorized(writer, "", "Welcome!")
 	})
 	go http.ListenAndServe(":80", nil)
 

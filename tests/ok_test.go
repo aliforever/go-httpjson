@@ -11,7 +11,7 @@ import (
 
 func TestOk(t *testing.T) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		httpjson.Ok(writer, "Welcome!")
+		httpjson.Ok(writer, "", "Welcome!")
 	})
 	go http.ListenAndServe(":80", nil)
 

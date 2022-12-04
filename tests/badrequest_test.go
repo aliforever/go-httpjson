@@ -11,7 +11,7 @@ import (
 
 func TestBadRequest(t *testing.T) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		httpjson.BadRequest(writer, "Welcome!")
+		httpjson.BadRequest(writer, "", "Welcome!")
 	})
 	go http.ListenAndServe(":80", nil)
 

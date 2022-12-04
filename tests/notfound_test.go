@@ -11,7 +11,7 @@ import (
 
 func TestNotFound(t *testing.T) {
 	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		httpjson.NotFound(writer, "Welcome!")
+		httpjson.NotFound(writer, "", "Welcome!")
 	})
 	go http.ListenAndServe(":80", nil)
 
