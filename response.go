@@ -22,19 +22,12 @@ func writeHeadersAndData(writer http.ResponseWriter, statusCode int, message str
 		Data: data,
 	})
 	if err != nil {
-		writer.Header().Set("Content-Type", "application/text")
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, err := writer.Write([]byte("Internal Server Error"))
-		if err != nil {
-			return err
-		}
-		return
+		return err
 	}
+
 	writer.Header().Set("Content-Type", "application/json")
 	writer.WriteHeader(statusCode)
 	_, err = writer.Write(jsonBytes)
-	if err != nil {
-		return err
-	}
-	return
+
+	return err
 }
