@@ -3,6 +3,7 @@ package httpjson
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 	"net/http"
 )
 
@@ -21,6 +22,20 @@ func Post[Response any](address string, data interface{}) (*Response, error) {
 	}
 
 	resp, err := http.Post(address, "application/json", bytes.NewReader(body))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var r *Response
+
+	err = json.NewDecoder(resp.Body).Decode(&r)
+
+	return r, err
+}
+
+func PostFromReader[Response any](address string, data io.Reader) (*Response, error) {
+	resp, err := http.Post(address, "application/json", data)
 	if err != nil {
 		return nil, err
 	}
