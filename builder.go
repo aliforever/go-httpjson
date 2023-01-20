@@ -10,8 +10,8 @@ type Builder struct {
 	data    interface{}
 }
 
-func New() Builder {
-	return Builder{}
+func New() *Builder {
+	return &Builder{}
 }
 
 func (b *Builder) SetMessage(message string) *Builder {
