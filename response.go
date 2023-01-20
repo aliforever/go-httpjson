@@ -11,16 +11,20 @@ type response struct {
 	Data interface{} `json:"data,omitempty"`
 }
 
-func writeHeadersAndData(writer http.ResponseWriter, statusCode int, message string, data interface{}) (err error) {
-	var jsonBytes []byte
-	jsonBytes, err = json.Marshal(response{
+func newResponse(statusCode int, message string, data interface{}) response {
+	return response{
 		payload: payload{
 			StatusCode: statusCode,
 			StatusName: statusMessage(statusCode),
 			Message:    message,
 		},
 		Data: data,
-	})
+	}
+}
+
+func writeHeadersAndData(writer http.ResponseWriter, statusCode int, message string, data interface{}) (err error) {
+	var jsonBytes []byte
+	jsonBytes, err = json.Marshal(newResponse(statusCode, message, data))
 	if err != nil {
 		return err
 	}
