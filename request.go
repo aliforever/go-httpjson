@@ -15,6 +15,30 @@ func UnmarshalRequest[T any](r *http.Request) (t *T, err error) {
 	return
 }
 
+type request struct {
+	payload
+
+	Data json.RawMessage `json:"data,omitempty"`
+}
+
+// UnmarshalRequestPayload this is to unmarshal the request using the library's payload structure
+func UnmarshalRequestPayload[T any](r *http.Request) (t *T, err error) {
+	defer r.Body.Close()
+
+	var request *request
+	err = json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(request.Data, &t)
+	if err != nil {
+		return nil, err
+	}
+
+	return
+}
+
 func Post[Response any](address string, data interface{}) (*Response, error) {
 	body, err := json.Marshal(data)
 	if err != nil {
