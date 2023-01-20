@@ -15,7 +15,7 @@ func UnmarshalRequest[T any](r *http.Request) (t *T, err error) {
 	return
 }
 
-type request struct {
+type Request struct {
 	payload
 
 	Data json.RawMessage `json:"data,omitempty"`
@@ -25,7 +25,7 @@ type request struct {
 func UnmarshalRequestPayload[T any](r *http.Request) (t *T, err error) {
 	defer r.Body.Close()
 
-	var request *request
+	var request *Request
 	err = json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
 		return nil, err
