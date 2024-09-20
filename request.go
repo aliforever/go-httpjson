@@ -80,6 +80,20 @@ func Post[Response any](address string, data interface{}) (*Response, error) {
 	return r, err
 }
 
+func Get[Response any](address string) (*Response, error) {
+	resp, err := http.Get(address)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var r *Response
+
+	err = json.NewDecoder(resp.Body).Decode(&r)
+
+	return r, err
+}
+
 func PostFromReader[Response any](address string, data io.Reader) (*Response, error) {
 	resp, err := http.Post(address, "application/json", data)
 	if err != nil {
