@@ -11,6 +11,7 @@ var statusMessages map[int]string = map[int]string{
 	http.StatusNotFound:            "NOT_FOUND",
 	http.StatusMethodNotAllowed:    "METHOD_NOT_ALLOWED",
 	http.StatusInternalServerError: "INTERNAL_SERVER_ERROR",
+	http.StatusTooManyRequests:     "TOO_MANY_REQUESTS",
 }
 
 func statusMessage(status int) (message string) {
