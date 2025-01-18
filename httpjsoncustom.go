@@ -4,6 +4,11 @@ import (
 	"net/http"
 )
 
+func Custom(writer http.ResponseWriter, statusCode int, data interface{}) (err error) {
+	err = writeHeadersAndDataCustom(writer, statusCode, data)
+	return
+}
+
 func OkCustom(writer http.ResponseWriter, data interface{}) (err error) {
 	err = writeHeadersAndDataCustom(writer, http.StatusOK, data)
 	return
