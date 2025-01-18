@@ -4,6 +4,11 @@ import (
 	"net/http"
 )
 
+func New(writer http.ResponseWriter, statusCode int, message string, data interface{}) (err error) {
+	err = writeHeadersAndData(writer, statusCode, message, data)
+	return
+}
+
 func Ok(writer http.ResponseWriter, message string, data interface{}) (err error) {
 	err = writeHeadersAndData(writer, http.StatusOK, message, data)
 	return

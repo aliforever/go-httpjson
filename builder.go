@@ -10,7 +10,7 @@ type Builder struct {
 	data    interface{}
 }
 
-func New() *Builder {
+func NewBuilder() *Builder {
 	return &Builder{}
 }
 
