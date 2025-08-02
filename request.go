@@ -3,6 +3,7 @@ package httpjson
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -61,7 +62,37 @@ func UnmarshalPayloadFromBytes[T any](data []byte) (t *T, err error) {
 	return
 }
 
+// Post this is to unmarshal the request using the library's payload structure and return the generic data
 func Post[Response any](address string, data interface{}) (*Response, error) {
+	body, err := json.Marshal(data)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.Post(address, "application/json", bytes.NewReader(body))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var r *struct {
+		payload
+		Data *Response `json:"data,omitempty"`
+	}
+
+	err = json.NewDecoder(resp.Body).Decode(&r)
+	if err != nil {
+		return nil, err
+	}
+
+	if r.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("status code: %d - message: %s", r.StatusCode, r.Message)
+	}
+
+	return r.Data, err
+}
+
+func PostCustom[Response any](address string, data interface{}) (*Response, error) {
 	body, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
@@ -80,7 +111,32 @@ func Post[Response any](address string, data interface{}) (*Response, error) {
 	return r, err
 }
 
+// Get this is to unmarshal the request using the library's payload structure and return the generic data
 func Get[Response any](address string) (*Response, error) {
+	resp, err := http.Get(address)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var r *struct {
+		payload
+		Data *Response `json:"data,omitempty"`
+	}
+
+	err = json.NewDecoder(resp.Body).Decode(&r)
+	if err != nil {
+		return nil, err
+	}
+
+	if r.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("status code: %d - message: %s", r.StatusCode, r.Message)
+	}
+
+	return r.Data, err
+}
+
+func GetCustom[Response any](address string) (*Response, error) {
 	resp, err := http.Get(address)
 	if err != nil {
 		return nil, err
